@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1c36"/><stop offset="1" stop-color="#05080e"/></linearGradient>
+<pattern id="p" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.04"/></pattern></defs>
+<rect width="1200" height="900" fill="url(#g)"/><rect width="1200" height="900" fill="url(#p)"/>
+<g transform="translate(-30,-60)"><path d="M250 560 C 300 470, 420 430, 520 425 C 600 380, 700 330, 790 335 C 880 340, 930 400, 980 440 C 1040 450, 1090 470, 1110 520 L 1110 590 L 1020 590 M 880 590 L 420 590 M 280 590 L 250 590 Z" fill="none" stroke="#4fa3ff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="350" cy="590" r="70" fill="none" stroke="#4fa3ff" stroke-width="10"/><circle cx="950" cy="590" r="70" fill="none" stroke="#4fa3ff" stroke-width="10"/></g>
+<text x="300" y="690" text-anchor="middle" font-family="Arial Narrow, Arial, sans-serif" font-style="italic" font-weight="800" font-size="88" fill="#4fa3ff" letter-spacing="6">AFTER</text>
+<text x="300" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#c3ccd8">Headlight Restoration</text><text x="300" y="800" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#c3ccd8">photo coming soon</text>
+<text x="300" y="850" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#6b7686">Placeholder image</text>
+</svg>
