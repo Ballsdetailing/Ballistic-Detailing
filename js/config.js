@@ -20,7 +20,7 @@ window.SITE = {
     region: "FL",
     // Your web address (GitHub Pages for now). If you get a custom domain, also find-and-replace it in the
     // .html files, sitemap.xml and robots.txt (see README, "Custom domain").
-    siteUrl: "https://ballsdetailing.github.io/ballistic-detailing"
+    siteUrl: "https://ballsdetailing.github.io/Ballistic-Detailing"
   },
 
   /* ---------- Hours ---------- */

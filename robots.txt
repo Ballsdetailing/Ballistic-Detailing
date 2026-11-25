@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ballsdetailing.github.io/ballistic-detailing/sitemap.xml
+Sitemap: https://ballsdetailing.github.io/Ballistic-Detailing/sitemap.xml
