@@ -18,9 +18,9 @@ window.SITE = {
     serviceArea: "Cape Coral & Fort Myers, FL",
     areaCities: ["Cape Coral", "Fort Myers"],
     region: "FL",
-    // PLACEHOLDER: your real web address. Also find-and-replace it in the
+    // Your web address (GitHub Pages for now). If you get a custom domain, also find-and-replace it in the
     // .html files, sitemap.xml and robots.txt (see README, "Custom domain").
-    siteUrl: "https://ballistic-detailing.example.com"
+    siteUrl: "https://ballsdetailing.github.io/ballistic-detailing"
   },
 
   /* ---------- Hours ---------- */
