@@ -86,7 +86,7 @@ window.SITE = {
       type: "standalone",
       inPackages: false,
       price: 100,
-      time: "about 1 hour",
+      time: "about 30 minutes",
       summary: "Cloudy, yellowed headlights restored to clear, with lasting protection.",
       items: ["3-step sanding", "Ceramic coating"]
     }
@@ -99,18 +99,36 @@ window.SITE = {
     summary: "Add it to any detail package for clear, bright headlights."
   },
 
-  vehicleNote: "Trucks and SUVs are welcome. Same service, same care.",
+  // Shown on the Packages page and in the FAQ only (not on the home page).
+  vehicleNote: "Trucks and SUVs have a slight upcharge, since they take more product and more labor.",
 
-  /* ---------- Gallery: before & after photos ----------
-     To add a pair: put two photos in images/before-after/
-     and add ONE line below, e.g.
-       { before: "civic-before.jpg", after: "civic-after.jpg", caption: "Honda Civic, full exterior" },
-     The first pair also shows on the home page. */
-  gallery: [
-    { before: "placeholder-before-1.svg", after: "placeholder-after-1.svg", caption: "Exterior Detail (photo coming soon)" },
-    { before: "placeholder-before-2.svg", after: "placeholder-after-2.svg", caption: "Interior Detail (photo coming soon)" },
-    { before: "placeholder-before-3.svg", after: "placeholder-after-3.svg", caption: "Headlight Restoration (photo coming soon)" }
+  /* ---------- Before & after sliders ----------
+     Photos live in images/before-after/. Crop each pair to the SAME size and
+     framing so the slider lines up. home: true shows it on the home page;
+     pairs without it appear on the Gallery page. ratio is the frame shape
+     (width / height), e.g. "4 / 5" portrait or "4 / 3" landscape. */
+  beforeAfter: [
+    { before: "tesla-before.jpg", after: "tesla-after.jpg", ratio: "4 / 5", home: true,
+      caption: "Tesla Model Y: foam bath to finished shine" },
+    { before: "headlight-before.jpg", after: "headlight-after.jpg", ratio: "4 / 5", home: true,
+      caption: "Headlight restoration: cloudy and yellowed to clear" }
   ],
+
+  /* ---------- Gallery photos (single photos on the Gallery page) ----------
+     Put the photo in images/gallery/ and add one line. width/height are the
+     photo's pixel size (keeps the page from jumping while it loads). */
+  photos: [
+    { file: "bronco.jpg", width: 920, height: 1636, caption: "Ford Bronco after a full detail" }
+  ],
+
+  /* ---------- Video (home page) ----------
+     Plays muted and on a loop. The poster shows while the video loads. */
+  video: {
+    file: "video/video-of-detailing.mp4",
+    poster: "images/video-poster.jpg",
+    width: 1080, height: 1920,
+    caption: "A Ballistic detail in action"
+  },
 
   /* ---------- Booking text message ----------
      {placeholders} are filled from the form. Edit the wording freely. */
@@ -148,6 +166,6 @@ window.SITE = {
     { q: "How do quotes work?",
       a: "Send a booking request from the Book page. It opens a pre-written text to us with your vehicle, service and preferred time. We text you back with a quote and confirm your appointment time. Nothing is booked until we reply." },
     { q: "Do trucks and SUVs cost more?",
-      a: "No. Trucks and SUVs are quoted the same as any other vehicle." }
+      a: "Yes, there's a slight upcharge for trucks and SUVs, since they take more product and more labor. It's included in the quote we text you." }
   ]
 };

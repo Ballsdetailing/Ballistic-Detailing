@@ -63,6 +63,8 @@
     menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>',
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>',
     van: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>',
+    play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>',
+    pause: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>',
     arrows: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg>'
   };
   window.ICONS = I;
@@ -174,13 +176,13 @@
   });
 
   /* ---------- before / after slider ---------- */
-  function baFigure(p, idx, eager) {
+  function baFigure(p) {
     var dir = "images/before-after/";
-    var lz = eager ? "" : ' loading="lazy"';
+    var ratio = p.ratio || "4 / 3";
     return '<figure class="ba">' +
-      '<div class="ba-frame">' +
-        '<img class="ba-before" src="' + dir + esc(p.before) + '" alt="Before: ' + esc(p.caption) + '" width="1200" height="900" decoding="async"' + lz + ">" +
-        '<img class="ba-after" src="' + dir + esc(p.after) + '" alt="After: ' + esc(p.caption) + '" width="1200" height="900" decoding="async"' + lz + ">" +
+      '<div class="ba-frame" style="aspect-ratio:' + esc(ratio) + '">' +
+        '<img class="ba-before" src="' + dir + esc(p.before) + '" alt="Before: ' + esc(p.caption) + '" decoding="async" loading="lazy">' +
+        '<img class="ba-after" src="' + dir + esc(p.after) + '" alt="After: ' + esc(p.caption) + '" decoding="async" loading="lazy">' +
         '<span class="ba-label ba-label--before" aria-hidden="true">Before</span><span class="ba-label ba-label--after" aria-hidden="true">After</span>' +
         '<span class="ba-line"></span><span class="ba-knob">' + I.arrows + "</span>" +
         '<input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Slide to compare before and after, ' + esc(p.caption) + '">' +
@@ -188,16 +190,57 @@
       "<figcaption>" + esc(p.caption) + "</figcaption>" +
     "</figure>";
   }
+  function photoFigure(p) {
+    return '<figure class="photo">' +
+      '<img src="images/gallery/' + esc(p.file) + '" alt="' + esc(p.caption) + '"' +
+        (p.width ? ' width="' + +p.width + '" height="' + +p.height + '"' : "") + ' loading="lazy" decoding="async">' +
+      "<figcaption>" + esc(p.caption) + "</figcaption></figure>";
+  }
+  // <div data-render="gallery" data-set="home">  -> before/after pairs marked home: true
+  // <div data-render="gallery" data-set="gallery"> -> the other pairs, then single photos
   document.querySelectorAll("[data-render='gallery']").forEach(function (n) {
-    var limit = +n.getAttribute("data-limit") || C.gallery.length;
-    var pairs = C.gallery.slice(0, limit);
-    n.innerHTML = pairs.length ? pairs.map(function (p, i) { return baFigure(p, i, false); }).join("")
-      : '<p class="ba-empty">Before &amp; after photos are coming soon. Follow us on Instagram for our latest work.</p>';
+    var set = n.getAttribute("data-set") || "gallery";
+    var pairs = (C.beforeAfter || []).filter(function (p) { return set === "home" ? p.home : !p.home; });
+    var html = pairs.map(baFigure).join("");
+    if (set !== "home") html += (C.photos || []).map(photoFigure).join("");
+    n.innerHTML = html || '<p class="ba-empty">More photos are coming soon. Follow us on Instagram for our latest work.</p>';
     n.querySelectorAll(".ba-range").forEach(function (r) {
       var frame = r.closest(".ba-frame");
       var update = function () { frame.style.setProperty("--pos", r.value + "%"); };
       r.addEventListener("input", update); update();
     });
+  });
+
+  /* ---------- video: muted loop, loads only when scrolled near ---------- */
+  document.querySelectorAll("[data-render='video']").forEach(function (n) {
+    var v = C.video; if (!v) return;
+    n.innerHTML = '<figure class="video">' +
+      '<div class="video-frame" style="aspect-ratio:' + +v.width + " / " + +v.height + '">' +
+        '<video muted loop playsinline preload="none" poster="' + esc(v.poster) + '" width="' + +v.width + '" height="' + +v.height + '" aria-label="' + esc(v.caption) + '">' +
+          '<source src="' + esc(v.file) + '" type="video/mp4"></video>' +
+        '<button class="video-toggle" type="button" aria-label="Pause video">' + I.pause + "</button>" +
+      "</div><figcaption>" + esc(v.caption) + "</figcaption></figure>";
+    var el = n.querySelector("video"), btn = n.querySelector(".video-toggle");
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var userPaused = reduce;
+    function setBtn() {
+      var playing = !el.paused;
+      btn.innerHTML = playing ? I.pause : I.play;
+      btn.setAttribute("aria-label", playing ? "Pause video" : "Play video");
+    }
+    function play() { var pr = el.play(); if (pr && pr.catch) pr.catch(function () { setBtn(); }); }
+    el.addEventListener("play", setBtn); el.addEventListener("pause", setBtn);
+    btn.addEventListener("click", function () {
+      if (el.paused) { userPaused = false; play(); } else { userPaused = true; el.pause(); }
+    });
+    setBtn();
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { if (!userPaused) play(); } else if (!el.paused) el.pause();
+        });
+      }, { rootMargin: "200px" }).observe(el);
+    } else if (!userPaused) play();
   });
 
   /* ---------- FAQ ---------- */

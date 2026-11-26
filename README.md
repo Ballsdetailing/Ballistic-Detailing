@@ -13,7 +13,7 @@ Plain HTML, CSS and JavaScript. No build step, no backend, no accounts. Bookings
 | `js/book.js` | The booking form and text message |
 | `css/styles.css` | All styling |
 | `images/` | Logo files, icons, share image |
-| `images/before-after/` | Before & after photos |
+| `images/before-after/`, `images/gallery/`, `video/` | Before & after pairs, gallery photos, home page video |
 | `tools/make-logo-images.swift` | Optional: regenerates all logo/icon sizes from one image (Mac only) |
 | `sitemap.xml`, `robots.txt`, `site.webmanifest`, `favicon.ico` | Search engine and browser files |
 
@@ -48,16 +48,24 @@ showPrices: false,
 
 to `true`. Change it back to `false` to hide them again. The booking form never shows prices.
 
-## Adding before & after photos
+## Adding photos
 
-1. Put your two photos in `images/before-after/` (for example `civic-before.jpg` and `civic-after.jpg`). Photos in a 4:3 landscape shape look best. Keep each under about 300 KB: export at around 1200 px wide, JPG quality 75-80 (on a Mac: open in Preview, Tools > Adjust Size, then File > Export as JPEG).
-2. In `js/config.js`, add one line to `gallery`:
+**Before & after sliders** (`images/before-after/`)
+
+1. Crop the before and after photo to the **same size and framing** (the car in the same spot in both), or the slider won't line up. Export around 1080 px wide, JPG quality 75-80 (on a Mac: Preview > Tools > Adjust Size, then File > Export).
+2. Put both files in `images/before-after/`.
+3. In `js/config.js`, add one line to `beforeAfter`:
    ```js
-   { before: "civic-before.jpg", after: "civic-after.jpg", caption: "Honda Civic, full exterior" },
+   { before: "civic-before.jpg", after: "civic-after.jpg", ratio: "4 / 5", caption: "Honda Civic, full exterior" },
    ```
-3. Delete the placeholder lines (`placeholder-before-1.svg`...) once you have real photos. You can also delete the placeholder files.
+   `ratio` is the photo shape (width / height): `"4 / 5"` for portrait phone photos, `"4 / 3"` for landscape. Add `home: true` to show it on the home page; without it, it shows on the Gallery page.
 
-The first two pairs also appear on the home page. If the list is empty, the gallery shows a friendly "coming soon" message instead.
+**Single photos** (`images/gallery/`): put the photo in the folder and add one line to `photos`, with its pixel size:
+```js
+{ file: "mustang.jpg", width: 1080, height: 1350, caption: "Mustang after a 2 for 1 detail" },
+```
+
+**Video**: the home page video is `video/video-of-detailing.mp4` (H.264 MP4, plays muted on a loop, starts when scrolled into view). Its poster image, shown while loading, is `images/video-poster.jpg`. Both are set in `video` in `js/config.js`. iPhone videos are usually HEVC `.MOV` files, which many Android phones and Windows browsers can't play, so convert new videos to H.264 MP4 first (on a Mac: open in QuickTime Player > File > Export As > 1080p, then rename to `.mp4`, or ask for help). Keep web videos under about 10 MB. The original `Video of detailing.MOV` is kept in the main folder but isn't used by the site.
 
 ## Replacing the logo
 
